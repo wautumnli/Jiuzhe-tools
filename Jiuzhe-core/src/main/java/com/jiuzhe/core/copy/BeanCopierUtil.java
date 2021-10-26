@@ -2,7 +2,11 @@ package com.jiuzhe.core.copy;
 
 import org.springframework.cglib.beans.BeanCopier;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
@@ -29,6 +33,7 @@ public class BeanCopierUtil {
             throw new IllegalArgumentException("bean copier null object!");
         }
         BeanCopier copier = getCopier(source.getClass(), target.getClass());
+        // TODO: 现存在的问题，不能和lombok的@Accessors一起使用，Accessors会使cglib失效
         copier.copy(source, target, null);
         return target;
     }
