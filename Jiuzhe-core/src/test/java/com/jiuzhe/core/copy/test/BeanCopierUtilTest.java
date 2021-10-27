@@ -4,9 +4,7 @@ import com.jiuzhe.core.copy.BeanCopierUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 public class BeanCopierUtilTest {
 
@@ -26,6 +24,7 @@ public class BeanCopierUtilTest {
 
     @Test
     public void multiBeanCopyTest() {
+        List<Class01> class01List = new ArrayList<>(10);
         for (int i = 0; i < 10; i++) {
             Class01 class01 = Class01.builder()
                     .id(i)
@@ -35,8 +34,9 @@ public class BeanCopierUtilTest {
                     .money(new BigDecimal(i))
                     .apps(Collections.singletonList(i))
                     .build();
-            Class02 class02 = new Class02();
-            System.out.println(BeanCopierUtil.copy(class01, class02));
+            class01List.add(class01);
         }
+        List<Class02> class02s = BeanCopierUtil.batchCopy(class01List, Class02::new);
+        System.out.println(class02s);
     }
 }
