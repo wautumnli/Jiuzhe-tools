@@ -23,6 +23,25 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <compilerArgument>-proc:none</compilerArgument>
+                            <includes>
+                                <!-- 自定义的注解处理器全限定名-->
+                                <include>com.jiuzhe.processor.impl.MapToObjectProcessor</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-project</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -42,6 +61,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jiuzhe</groupId>
+            <artifactId>Jiuzhe-processor</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
