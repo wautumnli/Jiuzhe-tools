@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 3)
 public class BeanCopierJMH {
 
-    private static SourceClass sourceClass;
+    private static final SourceClass sourceClass;
 
     @Data
     static class SourceClass {
@@ -72,7 +72,7 @@ public class BeanCopierJMH {
     public void beanCopier() {
         for (int i = 0; i < 10000; i++) {
             TargetClass targetClass = new TargetClass();
-            BeanCopierUtil.copy(sourceClass, targetClass);
+            BeanCopyUtil.copy(sourceClass, targetClass);
         }
     }
 

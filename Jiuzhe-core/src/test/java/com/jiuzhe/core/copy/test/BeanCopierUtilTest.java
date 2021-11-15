@@ -1,6 +1,6 @@
 package com.jiuzhe.core.copy.test;
 
-import com.jiuzhe.core.copy.BeanCopierUtil;
+import com.jiuzhe.core.copy.BeanCopyUtil;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public class BeanCopierUtilTest {
                 .apps(Arrays.asList(1, 2, 3))
                 .build();
         Class02 class02 = new Class02();
-        System.out.println(BeanCopierUtil.copy(class01, class02));
+        System.out.println(BeanCopyUtil.copy(class01, class02));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class BeanCopierUtilTest {
                     .build();
             class01List.add(class01);
         }
-        List<Class02> class02s = BeanCopierUtil.batchCopy(class01List, Class02::new);
+        List<Class02> class02s = BeanCopyUtil.batchCopy(class01List, Class02::new);
         System.out.println(class02s);
     }
 }
