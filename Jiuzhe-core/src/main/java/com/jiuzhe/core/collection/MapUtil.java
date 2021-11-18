@@ -44,7 +44,7 @@ public class MapUtil {
      */
     public static <K, V> Map<K, V> initHashMap(int initialCapacity) {
         // 初始化大小，考虑扩容的原因，且HashMap大小为2的幂次，所有初始化大小 = 自己所需大小 / 0.75 + 1
-        return new HashMap<>((int) ((float) initialCapacity / 0.75F + 1.0F));
+        return new HashMap<>((int) (initialCapacity / 0.75F + 1.0F));
     }
 
     /**
@@ -62,5 +62,9 @@ public class MapUtil {
             throw new RuntimeException("无法构建Map,参数类型有误!");
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println((int) (7 / 0.75f + 1.0f));
     }
 }
