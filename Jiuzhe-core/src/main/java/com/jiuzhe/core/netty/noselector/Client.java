@@ -1,4 +1,4 @@
-package com.jiuzhe.core.netty.nonblock;
+package com.jiuzhe.core.netty.noselector;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
