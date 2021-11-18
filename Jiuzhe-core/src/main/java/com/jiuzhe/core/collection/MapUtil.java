@@ -36,11 +36,6 @@ public class MapUtil {
         return map;
     }
 
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Map<Integer, Integer> objectObjectMap = asMap(null, null, 1, null, 2, 3);
-        int i = 1;
-    }
-
     /**
      * 初始化HashMap大小
      *
