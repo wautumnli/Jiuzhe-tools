@@ -10,6 +10,8 @@ import java.util.Objects;
  * @author tianzhenkun
  */
 public class MapUtil {
+
+    @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> asMap(Object... objects) {
         Map<K, V> map = initHashMap(objects.length / 2);
         // key, value成对，所以传入数量为偶数
@@ -62,9 +64,5 @@ public class MapUtil {
             throw new RuntimeException("无法构建Map,参数类型有误!");
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        System.out.println((int) (7 / 0.75f + 1.0f));
     }
 }
