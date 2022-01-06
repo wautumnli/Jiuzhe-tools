@@ -14,6 +14,7 @@ import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -27,6 +28,19 @@ public class MapToObjectProcessor extends AbstractProcessor {
     private JavacTrees trees;
     private TreeMaker treeMaker;
     private Names names;
+
+    /**
+     * 因为兼容问题，推荐使用重写getSupportedAnnotationTypes和getSupportedSourceVersion方法
+     */
+    @Override
+    public Set<String> getSupportedAnnotationTypes() {
+        return Collections.singleton("com.jiuzhe.processor.annotation.MapToObject");
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.RELEASE_8;
+    }
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
