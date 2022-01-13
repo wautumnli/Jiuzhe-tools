@@ -9,8 +9,6 @@ import com.ql.test.baseinfo.UserInfo;
 public class Test01 {
 
     @BaseInfo
-    public void info(HttpServletRequest a, Test02 b) {
-        System.out.println(b.getTenantId());
-        System.out.println(b.getWarehouseNo());
+    public void info(HttpServletRequest request, Test02 b) throws Exception {
     }
 }

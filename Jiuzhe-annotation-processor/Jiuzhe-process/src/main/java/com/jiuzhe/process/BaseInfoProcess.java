@@ -59,11 +59,12 @@ public class BaseInfoProcess extends AbstractProcessor {
                     List<JCVariableDecl> parameters = jcMethodDecl.params;
                     info(parameters.size());
                     // 1. example: BaseInfo baseInfo = BasicUtil.getUserInfo(request);
-                    JCTree.JCExpression methodName = access("com.jclps.jwms.entity.authority.util.getUserInfo");
-                    JCTree.JCExpression typeName = access("javax.servlet.http.HttpServletRequest");
+                    JCTree.JCExpression methodName = access("com.ql.test.util.BaseUtil.getUserInfo");
+                    JCTree.JCExpression typeName = access("com.ql.test.baseinfo.HttpServletRequest");
                     JCTree.JCMethodInvocation callMethod = treeMaker.Apply(List.of(typeName), methodName, List.of(access(parameters.get(0))));
                     JCTree.JCExpressionStatement exec = treeMaker.Exec(callMethod);
-                    JCVariableDecl var1 = treeMaker.VarDef(treeMaker.Modifiers(0), of("var1"), access("com.jclps.jwms.entity.authority.domain.UserInfo"), exec.getExpression());
+                    JCVariableDecl var1 = treeMaker.VarDef(treeMaker.Modifiers(0), of("var1"), access("com.ql.test.baseinfo.UserInfo"), exec.getExpression());
+                    info(var1.toString());
                     // 2. example: a.setTenantId(userInfo.getTenantId());
                     JCTree.JCExpression access = access("var1.getTenantId");
                     JCTree.JCMethodInvocation apply = treeMaker.Apply(List.nil(), access, List.nil());
@@ -75,10 +76,24 @@ public class BaseInfoProcess extends AbstractProcessor {
                     JCTree.JCExpression access2 = access("var1.getWarehouseNo");
                     JCTree.JCMethodInvocation apply2 = treeMaker.Apply(List.nil(), access2, List.nil());
                     JCTree.JCExpressionStatement exec3 = treeMaker.Exec(apply2);
-                    JCTree.JCExpression access3 = access(vName(parameters.get(1)) + "." + "setTenantId");
-                    JCTree.JCMethodInvocation apply3 = treeMaker.Apply(List.of(typeName), access3, List.of(exec1.getExpression()));
-                    JCTree.JCExpressionStatement exec4 = treeMaker.Exec(apply1);
-                    jcMethodDecl.body = treeMaker.Block(0, List.of(var1, exec2, exec4, jcMethodDecl.body));
+                    JCTree.JCExpression access3 = access(vName(parameters.get(1)) + "." + "setWarehouseNo");
+                    JCTree.JCMethodInvocation apply3 = treeMaker.Apply(List.of(typeName), access3, List.of(exec3.getExpression()));
+                    JCTree.JCExpressionStatement exec4 = treeMaker.Exec(apply3);
+                    // if (va1 == null) throw Exception
+                    JCTree.JCExpression access4 = access("com.ql.test.baseinfo.UserInfo");
+                    JCTree.JCMethodInvocation var11 = treeMaker.Apply(List.of(access4), access("java.util.Objects.isNull"), List.of(access("var1")));
+                    JCTree.JCExpressionStatement exec5 = treeMaker.Exec(var11);
+                    JCTree.JCNewClass jcNewClass = treeMaker.NewClass(
+                            null,
+                            List.nil(),
+                            access("java.lang.Exception"),
+                            List.nil(),
+                            null
+                    );
+                    JCTree.JCThrow exception = treeMaker.Throw(jcNewClass);
+                    JCTree.JCIf anIf = treeMaker.If(exec5.getExpression(), exception, null);
+                    info(anIf.toString());
+                    jcMethodDecl.body = treeMaker.Block(0, List.of(var1, anIf, exec2, exec4, jcMethodDecl.body));
                     super.visitMethodDef(jcMethodDecl);
                 }
             });
