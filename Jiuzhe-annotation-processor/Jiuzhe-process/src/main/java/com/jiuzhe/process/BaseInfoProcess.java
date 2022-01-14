@@ -57,7 +57,6 @@ public class BaseInfoProcess extends AbstractProcessor {
                 @Override
                 public void visitMethodDef(JCMethodDecl jcMethodDecl) {
                     List<JCVariableDecl> parameters = jcMethodDecl.params;
-                    info(parameters.size());
                     // 1. example: BaseInfo baseInfo = BasicUtil.getUserInfo(request);
                     JCTree.JCExpression methodName = access("com.ql.test.util.BaseUtil.getUserInfo");
                     JCTree.JCExpression typeName = access("com.ql.test.baseinfo.HttpServletRequest");
@@ -70,14 +69,14 @@ public class BaseInfoProcess extends AbstractProcessor {
                     JCTree.JCMethodInvocation apply = treeMaker.Apply(List.nil(), access, List.nil());
                     JCTree.JCExpressionStatement exec1 = treeMaker.Exec(apply);
                     JCTree.JCExpression access1 = access(vName(parameters.get(1)) + "." + "setTenantId");
-                    JCTree.JCMethodInvocation apply1 = treeMaker.Apply(List.of(typeName), access1, List.of(exec1.getExpression()));
+                    JCTree.JCMethodInvocation apply1 = treeMaker.Apply(List.nil(), access1, List.of(exec1.getExpression()));
                     JCTree.JCExpressionStatement exec2 = treeMaker.Exec(apply1);
                     // 3. example: a.setWarehouse()..
                     JCTree.JCExpression access2 = access("var1.getWarehouseNo");
                     JCTree.JCMethodInvocation apply2 = treeMaker.Apply(List.nil(), access2, List.nil());
                     JCTree.JCExpressionStatement exec3 = treeMaker.Exec(apply2);
                     JCTree.JCExpression access3 = access(vName(parameters.get(1)) + "." + "setWarehouseNo");
-                    JCTree.JCMethodInvocation apply3 = treeMaker.Apply(List.of(typeName), access3, List.of(exec3.getExpression()));
+                    JCTree.JCMethodInvocation apply3 = treeMaker.Apply(List.nil(), access3, List.of(exec3.getExpression()));
                     JCTree.JCExpressionStatement exec4 = treeMaker.Exec(apply3);
                     // if (va1 == null) throw Exception
                     JCTree.JCExpression access4 = access("com.ql.test.baseinfo.UserInfo");
@@ -86,14 +85,61 @@ public class BaseInfoProcess extends AbstractProcessor {
                     JCTree.JCNewClass jcNewClass = treeMaker.NewClass(
                             null,
                             List.nil(),
-                            access("java.lang.Exception"),
-                            List.nil(),
+                            access("java.lang.RuntimeException"),
+                            List.of(treeMaker.Literal("参数为空")),
                             null
                     );
                     JCTree.JCThrow exception = treeMaker.Throw(jcNewClass);
                     JCTree.JCIf anIf = treeMaker.If(exec5.getExpression(), exception, null);
-                    info(anIf.toString());
-                    jcMethodDecl.body = treeMaker.Block(0, List.of(var1, anIf, exec2, exec4, jcMethodDecl.body));
+                    // if (strIsBlank(tenantId)) throw RuntimeException()
+                    JCTree.JCExpressionStatement exec6 = treeMaker.Exec(
+                            treeMaker.Apply(
+                                    List.nil(),
+                                    access("var1.getWarehouseNo"),
+                                    List.nil()
+                            )
+                    );
+                    JCTree.JCExpressionStatement exec7 = treeMaker.Exec(
+                            treeMaker.Apply(
+                                    List.nil(),
+                                    access("com.jiuzhe.util.ProcessUtil.strIsBlank"),
+                                    List.of(exec6.getExpression())
+                            )
+                    );
+                    JCTree.JCNewClass jcNewClass1 = treeMaker.NewClass(
+                            null,
+                            List.nil(),
+                            access("java.lang.RuntimeException"),
+                            List.of(treeMaker.Literal("WarehouseNo为空")),
+                            null
+                    );
+                    JCTree.JCThrow aThrow = treeMaker.Throw(jcNewClass1);
+                    JCTree.JCIf anIf1 = treeMaker.If(exec7.getExpression(), aThrow, exec4);
+                    // if (strIsBlank(warehouseNo)) throw RuntimeException()
+                    JCTree.JCExpressionStatement exec8 = treeMaker.Exec(
+                            treeMaker.Apply(
+                                    List.nil(),
+                                    access("var1.getTenantId"),
+                                    List.nil()
+                            )
+                    );
+                    JCTree.JCExpressionStatement exec9 = treeMaker.Exec(
+                            treeMaker.Apply(
+                                    List.nil(),
+                                    access("com.jiuzhe.util.ProcessUtil.strIsBlank"),
+                                    List.of(exec8.getExpression())
+                            )
+                    );
+                    JCTree.JCNewClass jcNewClass2 = treeMaker.NewClass(
+                            null,
+                            List.nil(),
+                            access("java.lang.RuntimeException"),
+                            List.of(treeMaker.Literal("TenantId为空")),
+                            null
+                    );
+                    JCTree.JCThrow aThrow1 = treeMaker.Throw(jcNewClass2);
+                    JCTree.JCIf anIf2 = treeMaker.If(exec9.getExpression(), aThrow1, exec2);
+                    jcMethodDecl.body = treeMaker.Block(0, List.of(var1, anIf, anIf1, anIf2, jcMethodDecl.body));
                     super.visitMethodDef(jcMethodDecl);
                 }
             });
