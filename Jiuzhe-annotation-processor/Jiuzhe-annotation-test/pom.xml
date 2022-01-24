@@ -30,6 +30,16 @@
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
         </dependency>
+        <dependency>
+            <groupId>com.jclps.jwms</groupId>
+            <artifactId>jwms-local-common-annotation-base</artifactId>
+            <version>0.0.1-TEST-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jclps.jwms</groupId>
+            <artifactId>jwms-local-common-annotation-processor</artifactId>
+            <version>0.0.1-TEST-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
